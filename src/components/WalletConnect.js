@@ -7,9 +7,13 @@ const WalletConnect = ({ onWalletConnected }) => {
 
     const connectWallet = async () => {
         if (window.ethereum) {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            // Create a new provider
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            
+            // Request accounts
             const accounts = await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
+            const signer = await provider.getSigner();
+            
             setAccount(accounts[0]);
             onWalletConnected(signer);
         } else {

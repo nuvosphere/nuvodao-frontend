@@ -1,6 +1,6 @@
 // src/components/NuvoDAOInteraction.js
 import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import { ethers, parseEther, AbiCoder } from 'ethers';
 import ProposalList from './ProposalList';
 
 const NuvoDAOInteraction = ({ signer, contractAddress, contractABI }) => {
@@ -43,16 +43,17 @@ const NuvoDAOInteraction = ({ signer, contractAddress, contractABI }) => {
 
     const createProposal = async () => {
         try {
+            const abiCoder = new AbiCoder();
             const tx = await contract.createProposal(
                 proposalDescription,
                 60 * 60 * 24 * 3, // 3-day voting period
                 2, // ProposalType.Governance
                 1, // ProposalCategory.Policy
-                ethers.utils.defaultAbiCoder.encode(
+                abiCoder.encode(
                     ["uint256"],
                     [25] // Example: Change quorumPercentage to 25%
                 ),
-                { value: ethers.utils.parseEther("1") }
+                { value: parseEther("1") }
             );
             await tx.wait();
             setNotification("Proposal created!");

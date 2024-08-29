@@ -19,9 +19,10 @@ const DAODetails = ({ signer, contractAddress, contractABI }) => {
             const quorumPercentage = await daoContract.quorumPercentage();
             const proposalFee = await daoContract.proposalFee();
             const executionDelay = await daoContract.executionDelay();
+
             setDetails({
                 quorumPercentage: quorumPercentage.toString(),
-                proposalFee: ethers.utils.formatEther(proposalFee),
+                proposalFee: ethers.formatEther(proposalFee), // Updated to ethers.formatEther in version 6
                 executionDelay: executionDelay.toString(),
             });
         } catch (error) {
